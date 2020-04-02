@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import logo from './logo.svg';
-import "./App.css";
+import "./App.scss";
 // import "bootstrap/dist/css/bootstrap.min.css";
 import ExpenseList from "./components/ExpenseList";
 import ExpenseForm from "./components/ExpenseForm";
@@ -14,25 +14,58 @@ const initialExpenses = [
 ];
 
 const App = () => {
+  // ************* state values ************************
+  // all expenses, add expense
   const [expenses, setExpenses] = useState(initialExpenses);
+
+  // single expense
+  const [charge, setCharge] = useState("");
+
+  // single amount
+  const [amount, setAmount] = useState("");
+
+  // ***************functionality *********************
+  const handleCharge = event => {
+    console.log(`charge : ${event.target.value}`);
+    setCharge(event.target.value);
+  };
+
+  const handleAmount = event => {
+    console.log(`amount : ${event.target.value}`);
+
+    setAmount(event.target.value);
+  };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+  };
 
   return (
     <>
       <Alert />
-      <h1>Budget Calculator</h1>
-      <main className="App">
-        <ExpenseForm />
-        <ExpenseList expenses={expenses} />
-      </main>
-      <h1>
-        Total Spending :{" "}
-        <span className="total">
-          £
-          {expenses.reduce((accumulator, current) => {
-            return (accumulator += current.amount);
-          }, 0)}
-        </span>
-      </h1>
+      <section className="container">
+        <div className="wrapper">
+          <h2>Budget Calculator</h2>
+          <main className="App">
+            <ExpenseForm
+              charge={charge}
+              amount={amount}
+              handleAmount={handleAmount}
+              handleCharge={handleCharge}
+              handleSubmit={handleSubmit}
+            />
+            <ExpenseList expenses={expenses} />
+          </main>
+          <h2>
+            <span className="total">
+              Total Spending : £
+              {expenses.reduce((accumulator, current) => {
+                return (accumulator += current.amount);
+              }, 0)}
+            </span>
+          </h2>
+        </div>
+      </section>
     </>
   );
 };

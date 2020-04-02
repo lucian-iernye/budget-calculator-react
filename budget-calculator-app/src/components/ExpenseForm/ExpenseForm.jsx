@@ -2,10 +2,16 @@ import React from "react";
 import styles from "./ExpenseForm.module.scss";
 import { MdSend } from "react-icons/md";
 
-const ExpenseForm = () => {
+const ExpenseForm = ({
+  charge,
+  amount,
+  handleCharge,
+  handleAmount,
+  handleSubmit
+}) => {
   return (
     <>
-      <form action="">
+      <form action="" onSubmit={handleSubmit}>
         <div className="form-center">
           <div className="form-group">
             <label htmlFor="charge">Charge</label>
@@ -15,17 +21,21 @@ const ExpenseForm = () => {
               id="charge"
               name="charge"
               placeholder="ex. rent or mortgage"
+              value={charge}
+              onChange={handleCharge}
             />
           </div>
 
           <div className="form-group">
             <label htmlFor="amount">Amount</label>
             <input
-              type="text"
+              type="number"
               className="form-control"
               id="amount"
               name="amount"
               placeholder="ex. 200"
+              value={amount}
+              onChange={handleAmount}
             />
           </div>
         </div>
