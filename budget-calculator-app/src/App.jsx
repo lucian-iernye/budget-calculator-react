@@ -10,7 +10,7 @@ import uuid from "uuid/v4";
 const initialExpenses = [
   { id: uuid(), charge: "rent", amount: 1600 },
   { id: uuid(), charge: "car payment", amount: 400 },
-  { id: uuid(), charge: "credit card bill", amount: 1200 }
+  { id: uuid(), charge: "credit card bill", amount: 1200 },
 ];
 
 const App = () => {
@@ -24,24 +24,49 @@ const App = () => {
   // single amount
   const [amount, setAmount] = useState("");
 
+  //alert
+  const [alert, setAlert] = useState({ show: false });
+
   // ***************functionality *********************
-  const handleCharge = event => {
-    console.log(`charge : ${event.target.value}`);
+  //handle charge
+  const handleCharge = (event) => {
     setCharge(event.target.value);
   };
 
-  const handleAmount = event => {
-    console.log(`amount : ${event.target.value}`);
-
+  //handle amount
+  const handleAmount = (event) => {
     setAmount(event.target.value);
   };
 
-  const handleSubmit = event => {
+  //handle alert
+  const handleAlert = ({ type, text }) => {
+    setAlert({ show: true, type, text });
+    setTimeout(() => {
+      setAlert({ show: false });
+    }, 3000);
+  };
+
+  //handle submit
+  const handleSubmit = (event) => {
     event.preventDefault();
+    if (charge !== "" && amount > 0) {
+      const singleExpense = { id: uuid(), charge: charge, amount: amount };
+      setExpenses([...expenses, singleExpense]);
+      handleAlert({ type: "success", text: "item added" });
+      setCharge("");
+      setAmount("");
+    } else {
+      //handle alert called
+      handleAlert({
+        type: "danger",
+        text: `Charge can't be empty value and amount value has to be bigger than 0 !`,
+      });
+    }
   };
 
   return (
     <>
+      {alert.show && <Alert type={alert.type} text={alert.text} />}
       <Alert />
       <section className="container">
         <div className="wrapper">
@@ -60,7 +85,7 @@ const App = () => {
             <span className="total">
               Total Spending : £
               {expenses.reduce((accumulator, current) => {
-                return (accumulator += current.amount);
+                return (accumulator += parseInt(current.amount));
               }, 0)}
             </span>
           </h2>

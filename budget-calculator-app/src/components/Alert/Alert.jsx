@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./Alert.module.scss";
 
-const Alert = () => {
+const Alert = ({ type, text }) => {
   return (
     <>
-      <p>Alert works</p>
+      <div className={`alert alert-${type}`}>{text}</div>
     </>
   );
 };
